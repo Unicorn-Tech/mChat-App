@@ -7,23 +7,23 @@ mChat is a full-stack real-time messaging application with a React/Vite frontend
 
 1. Register a new account with email and password.
 
-<img src="app-asset/register-page.png" alt="Register page" width="700">
+<img src="app-asset/register-page.png" alt="Register page" width="900">
 
 2. Login with your credentials.
 
-<img src="app-asset/login-page.png" alt="Login page" width="700">
+<img src="app-asset/login-page.png" alt="Login page" width="900">
 
 3. Search for other users and start direct conversations.
 
-<img src="app-asset/search-users.png" alt="Search users" width="700">
+<img src="app-asset/search-users.png" alt="Search users" width="900">
 
 4. Send and receive messages in real-time with online presence indicators.
 
-<img src="app-asset/chat-page.png" alt="Chat page" width="700">
+<img src="app-asset/chat-page.png" alt="Chat page" width="900">
 
-<img src="app-asset/manoj-login-system.png" alt="Chat page" width="700">
+<img src="app-asset/manoj-login-system.png" alt="Chat page" width="900">
 
-<img src="app-asset/manoj-login-system.png" alt="Chat page" width="700">
+<img src="app-asset/manoj-login-system.png" alt="Chat page" width="900">
 
 
 ## Project Structure
