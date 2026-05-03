@@ -25,6 +25,11 @@ mChat is a full-stack real-time messaging application with a React/Vite frontend
 
 <img src="app-asset/manoj-login-system.png" alt="Chat page" width="900">
 
+5. DB Table
+
+<img src="app-asset/message-table.png" alt="DB Table" width="900">
+
+<img src="app-asset/message-table.png" alt="DB Table" width="900">
 
 ## Project Structure
 
