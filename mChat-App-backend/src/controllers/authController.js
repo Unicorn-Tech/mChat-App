@@ -27,7 +27,6 @@ function setAuthCookies(res, { accessToken, refreshToken }) {
   });
 }
 /** 
-@register
 Register a new user with name, email, password, and optional avatarUrl. 
 Returns user info and tokens.
 **/
@@ -49,11 +48,7 @@ const register = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  const accessToken = signAccessToken(
-    { sub: user._id.toString() },
-    JWT_SECRET,
-    JWT_EXPIRY,
-  );
+  const accessToken = signAccessToken({ sub: user._id.toString() }, JWT_SECRET, JWT_EXPIRY);
   const refreshToken = signAccessToken(
     { sub: user._id.toString(), type: "refresh" },
     JWT_REFRESH_SECRET,
@@ -65,7 +60,6 @@ const register = asyncHandler(async (req, res) => {
 });
 
 /** 
-@login
 Login an existing user with email and password.
 Returns user info and tokens.
 **/
@@ -95,7 +89,6 @@ const login = asyncHandler(async (req, res) => {
 });
 
 /** 
-@me
 Get the authenticated user's info.
 **/
 const me = asyncHandler(async (req, res) => {
@@ -130,7 +123,6 @@ const refresh = asyncHandler(async (req, res) => {
 });
 
 /** 
-@logout
 Clear authentication cookies to log the user out.
 **/
 const logout = asyncHandler(async (req, res) => {

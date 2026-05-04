@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const signAccessToken = (payload, secret, expiresIn) => {
+function signAccessToken(payload, secret, expiresIn){
   return jwt.sign(payload, secret, { expiresIn });
 };
 
-const verifyToken = (token, secret) => {
+function verifyToken(token, secret) {
   return jwt.verify(token, secret);
 };
+
 
 
 module.exports = { signAccessToken, verifyToken };
