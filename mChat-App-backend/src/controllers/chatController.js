@@ -4,11 +4,23 @@ const { asyncHandler } = require("../utils/asyncHandler");
 const { Chat } = require("../models/Chat");
 const { User } = require("../models/User");
 
+/**
+ * 
+ * @param {id} id 
+ * @returns {ObjectId} Mongoose ObjectId instance if valid, otherwise throws 400 error. 
+ */
 function ensureObjectId(id) {
   if (!mongoose.Types.ObjectId.isValid(id)) throw createError(400, "Invalid id");
   return new mongoose.Types.ObjectId(id);
 }
 
+/**
+ * Checks if the user is a member of the chat. If so, returns the chat document. Otherwise, throws 403 or 404 error.
+ * @param {ObjectId} chatId 
+ * @param {ObjectId} userId 
+ * @returns {Chat} Chat document if user is a member.
+ * 
+ **/
 async function resolveDirectChatUser(req) {
   const selectedEmail = req.body.email ? req.body.email.toString().trim().toLowerCase() : "";
   const selectedUserId = req.body.userId && mongoose.Types.ObjectId.isValid(req.body.userId)
@@ -27,6 +39,12 @@ async function resolveDirectChatUser(req) {
   throw createError(400, "Selected user is invalid");
 }
 
+/**
+ * Enriches a chat object with additional information for the specified user.
+ * @param {Chat} chat 
+ * @param {ObjectId} currentUserId 
+ * @returns {Object} Enriched chat object.
+ */
 function enrichChatForUser(chat, currentUserId) {
   const chatObject = typeof chat.toObject === "function" ? chat.toObject() : chat;
   if (chatObject.isGroup) return chatObject;
