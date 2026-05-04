@@ -26,7 +26,11 @@ function setAuthCookies(res, { accessToken, refreshToken }) {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
-
+/** 
+@register
+Register a new user with name, email, password, and optional avatarUrl. 
+Returns user info and tokens.
+**/
 const register = asyncHandler(async (req, res) => {
   const data = matchedData(req);
   const { name, password, avatarUrl } = data;
@@ -37,15 +41,19 @@ const register = asyncHandler(async (req, res) => {
 
   const user = new User({ name, email, passwordHash: "temp" });
   await user.setPassword(password);
-  
+
   // If avatarUrl is provided, store it
   if (avatarUrl) {
     user.avatarUrl = avatarUrl;
   }
-  
+
   await user.save();
 
-  const accessToken = signAccessToken({ sub: user._id.toString() }, JWT_SECRET, JWT_EXPIRY);
+  const accessToken = signAccessToken(
+    { sub: user._id.toString() },
+    JWT_SECRET,
+    JWT_EXPIRY,
+  );
   const refreshToken = signAccessToken(
     { sub: user._id.toString(), type: "refresh" },
     JWT_REFRESH_SECRET,
@@ -56,6 +64,11 @@ const register = asyncHandler(async (req, res) => {
   res.status(201).json({ user: user.toSafeJSON(), accessToken, refreshToken });
 });
 
+/** 
+@login
+Login an existing user with email and password.
+Returns user info and tokens.
+**/
 const login = asyncHandler(async (req, res) => {
   const { password } = matchedData(req);
   const email = matchedData(req).email.toString().trim().toLowerCase();
@@ -66,7 +79,11 @@ const login = asyncHandler(async (req, res) => {
   const ok = await user.verifyPassword(password);
   if (!ok) throw createError(401, "Invalid credentials");
 
-  const accessToken = signAccessToken({ sub: user._id.toString() }, JWT_SECRET, JWT_EXPIRY);
+  const accessToken = signAccessToken(
+    { sub: user._id.toString() },
+    JWT_SECRET,
+    JWT_EXPIRY,
+  );
   const refreshToken = signAccessToken(
     { sub: user._id.toString(), type: "refresh" },
     JWT_REFRESH_SECRET,
@@ -77,6 +94,10 @@ const login = asyncHandler(async (req, res) => {
   res.json({ user: user.toSafeJSON(), accessToken, refreshToken });
 });
 
+/** 
+@me
+Get the authenticated user's info.
+**/
 const me = asyncHandler(async (req, res) => {
   res.json({ user: req.user.toSafeJSON() });
 });
@@ -86,13 +107,18 @@ const refresh = asyncHandler(async (req, res) => {
   if (!refreshToken) throw createError(401, "Missing refresh token");
 
   const decoded = verifyToken(refreshToken, JWT_REFRESH_SECRET);
-  if (decoded?.type !== "refresh") throw createError(401, "Invalid refresh token");
+  if (decoded?.type !== "refresh")
+    throw createError(401, "Invalid refresh token");
 
   const userId = decoded?.sub;
   const user = await User.findById(userId);
   if (!user) throw createError(401, "User not found");
 
-  const accessToken = signAccessToken({ sub: user._id.toString() }, JWT_SECRET, JWT_EXPIRY);
+  const accessToken = signAccessToken(
+    { sub: user._id.toString() },
+    JWT_SECRET,
+    JWT_EXPIRY,
+  );
   const newRefreshToken = signAccessToken(
     { sub: user._id.toString(), type: "refresh" },
     JWT_REFRESH_SECRET,
@@ -103,6 +129,10 @@ const refresh = asyncHandler(async (req, res) => {
   res.json({ accessToken, refreshToken: newRefreshToken });
 });
 
+/** 
+@logout
+Clear authentication cookies to log the user out.
+**/
 const logout = asyncHandler(async (req, res) => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
