@@ -15,11 +15,7 @@ function ensureObjectId(id) {
 }
 
 /**
- * Checks if the user is a member of the chat. If so, returns the chat document. Otherwise, throws 403 or 404 error.
- * @param {ObjectId} chatId 
- * @param {ObjectId} userId 
- * @returns {Chat} Chat document if user is a member.
- * 
+ * Checks if the user is a member of the chat. If so, returns the chat document. Otherwise, throws 403 or 404 error. 
  **/
 async function resolveDirectChatUser(req) {
   const selectedEmail = req.body.email ? req.body.email.toString().trim().toLowerCase() : "";
@@ -41,9 +37,6 @@ async function resolveDirectChatUser(req) {
 
 /**
  * Enriches a chat object with additional information for the specified user.
- * @param {Chat} chat 
- * @param {ObjectId} currentUserId 
- * @returns {Object} Enriched chat object.
  */
 function enrichChatForUser(chat, currentUserId) {
   const chatObject = typeof chat.toObject === "function" ? chat.toObject() : chat;
